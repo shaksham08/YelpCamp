@@ -1,0 +1,70 @@
+show dbs
+use demo
+db.dogs.insert({name:"rusty"},{breed:"mutt"})
+db.dogs.insert({name:"snowy"},{breed:"pandikona"})
+
+
+show collections : dogs
+
+db.dogs.find({name:"rusty"})
+
+db.dogs.update({name:"rusty"},{breed:"changed"})
+
+
+ show collections
+dogs
+> db.dog.find()
+> db.dog.find()
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+> db.dogs.find({name:"rusty})
+2020-04-20T22:51:56.073+0530 E  QUERY    [js] uncaught exception: SyntaxError: "" literal not terminated before end of script :
+@(shell):1:27
+> db.dogs.find({name:"rusty"})
+> db.dogs.find({name:"rust"})
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+>
+> db.dogs.insert({name:"snowy",breed:""pandikona})
+2020-04-20T22:57:55.566+0530 E  QUERY    [js] uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:37
+> db.dogs.insert({name:"snowy",breed:"pandikona"})
+WriteResult({ "nInserted" : 1 })
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+{ "_id" : ObjectId("5e9ddbae3b8352c0567adb0d"), "name" : "snowy", "breed" : "pandikona" }
+> db.dogs.update({name:"snowy"},{name:"ganda"})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+{ "_id" : ObjectId("5e9ddbae3b8352c0567adb0d"), "name" : "ganda" }
+
+
+
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+{ "_id" : ObjectId("5e9ddbae3b8352c0567adb0d"), "name" : "ganda" }
+> db.dogs.insert({name:"snowy",breed:"pandikona"})
+WriteResult({ "nInserted" : 1 })
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+{ "_id" : ObjectId("5e9ddbae3b8352c0567adb0d"), "name" : "ganda" }
+{ "_id" : ObjectId("5e9ddc593b8352c0567adb0e"), "name" : "snowy", "breed" : "pandikona" }
+> db.dogs.update({name:"snowy"},{$set:{name:"ganda",iscute:true}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+{ "_id" : ObjectId("5e9ddbae3b8352c0567adb0d"), "name" : "ganda" }
+{ "_id" : ObjectId("5e9ddc593b8352c0567adb0e"), "name" : "ganda", "breed" : "pandikona", "iscute" : true }
+>
+
+db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+{ "_id" : ObjectId("5e9ddbae3b8352c0567adb0d"), "name" : "ganda" }
+{ "_id" : ObjectId("5e9ddc593b8352c0567adb0e"), "name" : "ganda", "breed" : "pandikona", "iscute" : true }
+> db.dogs.remove({name:"ganda"})
+WriteResult({ "nRemoved" : 2 })
+> db.dogs.find()
+{ "_id" : ObjectId("5e9dd9d43b8352c0567adb0c"), "name" : "rust" }
+>
+
+//* we can also provide the [0] to remove 1 or if we dont write then it will erase all

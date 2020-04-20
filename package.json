@@ -1,0 +1,25 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "yelpcamp",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaksham08/YelpCamp.git"
+  },
+  "author": "shaksham",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shaksham08/YelpCamp/issues"
+  },
+  "homepage": "https://github.com/shaksham08/YelpCamp#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.3"
+  }
+}
