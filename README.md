@@ -5,6 +5,8 @@ This is a complete Full stack project made using HTML,CSS,JS,NODE,EXPRESS and MO
 
 A table of all 7 RESTful route
 
+REST(Representational state transfer) is jsut a convention for mapping our HTTP Routes to our CRUD functionality.
+
 |   Name  | Path          | HTTP Verb | Pupose                                           |
 |:-------:|---------------|-----------|--------------------------------------------------|
 |  Index  | /dogs         | GET       | List all dogs                                    |
