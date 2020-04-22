@@ -68,3 +68,10 @@ WriteResult({ "nRemoved" : 2 })
 >
 
 //* we can also provide the [0] to remove 1 or if we dont write then it will erase all
+
+
+ db.campgrounds.drop()
+true
+>
+
+this will remove all the data from the collection
