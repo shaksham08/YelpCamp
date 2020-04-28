@@ -15,8 +15,6 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
 
 seedDB();
 
-//SCHEMA SETUP
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
