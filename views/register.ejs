@@ -4,20 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YelpCamp</title>
+    <!-- Latest compiled and minified CSS -->
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous"
     />
+
+    <link rel="stylesheet" href="/stylesheets/main.css" />
   </head>
+
   <body>
     <%- include("partials/nav") %>
 
-    <h1><%= campground.name %></h1>
+    <h1>Sign Up</h1>
 
-    <img src="<%= campground.image %>" alt="" />
-
-    <p><%= campground.description %></p>
+    <form action="/register" method="post">
+      <input type="text" name="username" placeholder="username" />
+      <input type="password" name="password" placeholder="password" />
+      <button>Sign Up</button>
+    </form>
+    <%- include("partials/footer.ejs")%>
   </body>
 </html>

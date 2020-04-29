@@ -4,9 +4,13 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const port = 8000;
 var seedDB = require("./seeds");
-const Campground = require("./models/campground");
-// const User = require("./models/user");
-// const Comment = require("./models/comment");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
+
+const commentRoutes = require("./routes/comments");
+const campgroundRoutes = require("./routes/campgrounds");
+const indexRoutes = require("./routes/index");
 
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {
   useNewUrlParser: true,
@@ -15,64 +19,34 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
 
 seedDB();
 
+//passport configuration
+app.use(
+  require("express-session")({
+    secret: "i am the best",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("landing");
+app.use(express.static(__dirname + "/public"));
+//call on every route
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
 });
 
-//INDEX - show all campgrounds
-app.get("/campgrounds", (req, res) => {
-  //get all campgrounds from db
-  Campground.find({}, (err, allcampgrounds) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("index", { campgrounds: allcampgrounds });
-    }
-  });
-  //
-});
-
-//NEw : show fporm to create campground
-//* getting data from the form
-app.post("/campgrounds", (req, res) => {
-  var name = req.body.name;
-  var image = req.body.image;
-  var description = req.body.description;
-  var newCampground = {
-    name: name,
-    image: image,
-    description: description,
-  };
-
-  // create a new campground and save to the databse
-  Campground.create(newCampground, (err, newAddedCampground) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(newAddedCampground);
-      res.redirect("/campgrounds");
-    }
-  });
-});
-
-app.get("/campgrounds/new", function (req, res) {
-  res.render("new.ejs");
-});
-
-app.get("/campgrounds/:id", (req, res) => {
-  //find the campground with provided id and show the details
-
-  Campground.findById(req.params.id, (err, foundCampgrounds) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("show", { campground: foundCampgrounds });
-    }
-  });
-});
+app.use(indexRoutes);
+app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/campgrounds", campgroundRoutes);
 
 app.listen(port, () => {
   console.log(`Server is runnning ${port}`);
