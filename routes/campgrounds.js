@@ -66,6 +66,45 @@ router.get("/:id", (req, res) => {
     });
 });
 
+//* Edit campground ROute
+router.get("/:id/edit", (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+      res.redirect("/campgrounds");
+    }
+    res.render("campgrounds/edit", { campground: foundCampground });
+  });
+});
+//* Update campground route
+router.put("/:id", (req, res) => {
+  //!find and update the correct campground and redirect
+  //we can do this also or dorectly we can create the object from form itself
+  // var data = {
+  //   name: req.body.name,
+  //   image: req.body.image,
+  //   description: req.body.description,
+  // };
+  Campground.findByIdAndUpdate(
+    req.params.id,
+    req.body.campground,
+    (err, updatedCampground) => {
+      if (err) {
+        res.redirect("/campgrounds");
+      }
+      res.redirect("/campgrounds/" + req.params.id);
+    }
+  );
+});
+//*destroy campground route
+router.delete("/:id", (req, res) => {
+  Campground.findByIdAndRemove(req.params.id, (err) => {
+    if (err) {
+      console.log("DELETED");
+    }
+    res.redirect("/campgrounds");
+  });
+});
+
 //!middleware
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {

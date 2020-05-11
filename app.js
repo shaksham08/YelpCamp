@@ -11,6 +11,7 @@ const User = require("./models/user");
 const commentRoutes = require("./routes/comments");
 const campgroundRoutes = require("./routes/campgrounds");
 const indexRoutes = require("./routes/index");
+const methodOverride = require("method-override");
 
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {
   useNewUrlParser: true,
@@ -33,6 +34,7 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use(methodOverride("_method"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
