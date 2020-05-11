@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Campground = require("../models/campground");
-
+var middleware = require("../middleware");
 //INDEX - show all campgrounds
 router.get("/", (req, res) => {
   //get all campgrounds from db
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 //NEw : show fporm to create campground
 //* getting data from the form
 //!CREATE - add  new campground to DB
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   var name = req.body.name;
   var image = req.body.image;
   var description = req.body.description;
@@ -47,7 +47,7 @@ router.post("/", isLoggedIn, (req, res) => {
   });
 });
 
-router.get("/new", isLoggedIn, function (req, res) {
+router.get("/new", middleware.isLoggedIn, function (req, res) {
   res.render("campgrounds/new.ejs");
 });
 
@@ -67,16 +67,17 @@ router.get("/:id", (req, res) => {
 });
 
 //* Edit campground ROute
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", middleware.checkCampgroundOwnership, (req, res) => {
+  //!is user loged in
+
   Campground.findById(req.params.id, (err, foundCampground) => {
-    if (err) {
-      res.redirect("/campgrounds");
-    }
-    res.render("campgrounds/edit", { campground: foundCampground });
+    res.render("campgrounds/edit", {
+      campground: foundCampground,
+    });
   });
 });
 //* Update campground route
-router.put("/:id", (req, res) => {
+router.put("/:id", middleware.checkCampgroundOwnership, (req, res) => {
   //!find and update the correct campground and redirect
   //we can do this also or dorectly we can create the object from form itself
   // var data = {
@@ -96,7 +97,7 @@ router.put("/:id", (req, res) => {
   );
 });
 //*destroy campground route
-router.delete("/:id", (req, res) => {
+router.delete("/:id", middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
       console.log("DELETED");
@@ -105,13 +106,7 @@ router.delete("/:id", (req, res) => {
   });
 });
 
-//!middleware
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect("/login");
-  }
-}
+
+
 
 module.exports = router;

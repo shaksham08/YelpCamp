@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
-
+var middleware = require("../middleware");
 router.get("/", (req, res) => {
   res.render("landing");
 });
@@ -30,7 +30,7 @@ router.post("/register", function (req, res) {
 
 //* show login form
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { message: req.flash("error") });
 });
 
 router.post(
@@ -39,7 +39,7 @@ router.post(
     successRedirect: "/campgrounds",
     failureRedirect: "/login",
   }),
-  (req, res) => {}
+  (req, res) => { }
 );
 
 //logout route
@@ -48,12 +48,5 @@ router.get("/logout", (req, res) => {
   res.redirect("/campgrounds");
 });
 
-//!middleware
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect("/login");
-  }
-}
+
 module.exports = router;
