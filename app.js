@@ -3,12 +3,11 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const port = 8000;
-var seedDB = require("./seeds");
+const seedDB = require("./seeds");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-const flash = require("connect-flash")
-
+const flash = require("connect-flash");
 const commentRoutes = require("./routes/comments");
 const campgroundRoutes = require("./routes/campgrounds");
 const indexRoutes = require("./routes/index");
@@ -20,7 +19,7 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
 });
 
 //seedDB();
-app.use(flash())
+app.use(flash());
 
 //passport configuration
 app.use(
